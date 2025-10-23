@@ -9,10 +9,10 @@ export const getAllQuestions = (req, res) =>{
 }
 
 export const createQuestions = (req, res) => {
-    const {question, answer} = req.body
-    if (!question || !answer){
-        return res.status(400).send({ error: 'Invalid request'})
-    }
+    //const {question, answer} = req.body
+    //if (!question || !answer){
+    //    return res.status(400).send({ error: 'Invalid request'})
+    //}
     res.status(201).send({ message: 'Question Created'})
 }
 
