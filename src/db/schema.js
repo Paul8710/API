@@ -10,5 +10,14 @@ export const questionsTable = sqliteTable('questions', {
     .default('easy'),
     createdAt: integer('created_at', { mode: 'timestamp'})
     .notNull()
-    .$defaultFn(() => new Date())
+    .$defaultFn(() => new Date()),
+    createdBy: text().references(() => usersTable.id, { onDelete: 'cascade'}).notNull()
 })
+
+export const usersTable = sqliteTable('users', {
+    id: text().primaryKey().$defaultFn(() => randomUUID()),
+    email: text().unique().notNull(),
+    password: text('password', { length: 255}).notNull(),
+    username: text('username', {length: 30}).unique().notNull()
+})
+
