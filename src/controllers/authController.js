@@ -3,6 +3,8 @@ import bcrypt from 'bcrypt'
 import { db } from "../db/database.js"
 import { usersTable } from "../db/schema.js"
 import {request, response} from 'express'
+import jwt from 'jsonwebtoken'
+import 'dotenv/config'
 
 /**
  * 
@@ -19,8 +21,15 @@ export const createUsers = async (req, res) => {
     
     try {
         let hashpassword = bcrypt.hashSync(password,12)
-        const questions = await db.insert(usersTable).values({email: email, username: username, password: hashpassword}).returning({email: usersTable.email, username: usersTable.username, id: usersTable.id})
-        res.status(200).json({message:'Good', userData: questions, token: 'TOKEN'})
+        const User = await db.insert(usersTable).values({email: email, username: username, password: hashpassword}).returning({email: usersTable.email, username: usersTable.username, id: usersTable.id})
+        
+        const token = jwt.sign({ userId: User.id}, process.env.JWT_SECRET, { expiresIn: '24h'})
+        
+        res.status(201).json({
+            message:'Good', 
+            userData: User, 
+            token
+        })
     } catch (error) {
         console.error(error)
         res.status(500).json({

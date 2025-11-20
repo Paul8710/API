@@ -10,3 +10,10 @@ export const createUserSchema = z.object({
     .min(6, 'pass text is trop petit')
     .max(100),
 })
+
+export const loginUserSchema = z.object({
+    email: z.email(), 
+    password: z.string()
+    .min(6, 'pass text is trop petit')
+    .max(100),
+})
